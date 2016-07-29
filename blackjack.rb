@@ -16,7 +16,6 @@ def main
   #START GAME
   puts "================================="
   puts "RUBY BLACK JACK GAME"
-  puts "Game Score: Player=" + @playerGameScore.to_s + " Dealer=" + @dealerGameScore.to_s
   @round = 1
   #START ROUND - a round consists of player/players going first followed by the dealer last.
   #A round is conculded when the dealer stays or busts.  The round is then scored and gmae scores are updated
@@ -41,13 +40,13 @@ def main
           break
       end #end case
     end #end loop
+    puts "Are you sure you would like to quit? (y/n)"
+    replay = gets().downcase.strip
+    break if replay == "y"
   end
-
-
-  puts "Would you like to play again? (y/n)"
-  replay = gets().downcase.strip
-  main if replay == "y"
 end #end main
+
+
 def getValue(card)# This function takes a card as a parameter and returns the value of that card
   case card%13
     when 0,11,12 then return 10
@@ -55,6 +54,8 @@ def getValue(card)# This function takes a card as a parameter and returns the va
     else return card%13
     end #end case
 end #end getValue
+
+
 def identCard(card) #given a card numb(1..52) identifies the face and suit of that card
   suit = (case (card-1)/13
           when 0 then " of hearts"
@@ -71,6 +72,8 @@ def identCard(card) #given a card numb(1..52) identifies the face and suit of th
     else return (card%13).to_s + suit
   end #end case
 end #end identCard
+
+
 def scoreHand(hand) #determines the score of the hand
   total=0
   aceCount=0
@@ -87,12 +90,14 @@ def scoreHand(hand) #determines the score of the hand
   end #end do
   total
 end #end scorehand
+
 def playerHit
   @playerHand<<@deck.pop
   puts "You drew the " + identCard(@playerHand[@playerHand.length - 1])
   puts "Your score is now " + scoreHand(@playerHand).to_s
   puts "Bust! You lose." if scoreHand(@playerHand)> 21
 end #end playerhit
+
 def playerStand
   puts "You stand with a score of " + scoreHand(@playerHand).to_s
   puts "Dealer shows the " + identCard(@dealerHand[0]) + " and the " + identCard(@dealerHand[1]) + " for a score of " + scoreHand(@dealerHand).to_s
