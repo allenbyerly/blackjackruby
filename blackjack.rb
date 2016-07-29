@@ -1,25 +1,49 @@
 #!/usr/bin/env ruby
-puts "Hi welcome to Blackjack"
+#This program uses a smaple blackjack command prompt game as a foundation for
+#expediancy.  https://github.com/jbarson/Ruby-Blackjack.git
+#Explicit code used from this source will be indicated with a reference
+
+
 def main
-  @deck =  (1..52).to_a.shuffle  #deck creates a fresh random deck
-  @playerHand = [@deck.pop,@deck.pop]  #players initial hand
-  @dealerHand = [@deck.pop,@deck.pop]  #dealers initial hand
-  puts "You have the " + identCard(@playerHand[0]) + " and the " + identCard(@playerHand[1]) + " for a score of " + scoreHand(@playerHand).to_s
-  puts "Dealer shows the #{identCard(@dealerHand[0])}"
+  #initialize global variables
+  @playerGameScore = 0 #player starts at a score of 0
+  @dealerGameScore = 0 #dealer starts at a score of 0
+
+  @deck =  (1..52).to_a.shuffle  #deck creates a fresh random deck https://github.com/jbarson/Ruby-Blackjack.git
+  @playerHand = [@deck.pop,@deck.pop]  #players initial hand https://github.com/jbarson/Ruby-Blackjack.git
+  @dealerHand = [@deck.pop,@deck.pop]  #dealers initial hand https://github.com/jbarson/Ruby-Blackjack.git
+  @round = 0
+  #START GAME
+  puts "================================="
+  puts "RUBY BLACK JACK GAME"
+  puts "Game Score: Player=" + @playerGameScore.to_s + " Dealer=" + @dealerGameScore.to_s
+  @round = 1
+  #START ROUND - a round consists of player/players going first followed by the dealer last.
+  #A round is conculded when the dealer stays or busts.  The round is then scored and gmae scores are updated
   loop do
-    puts "Would you like to (h)it, (s)tand or (q)uit?"
-    answer = gets().downcase.strip
-    case
-      when answer == "q"
-        break
-      when answer == "h"
-        playerHit
-        break if scoreHand(@playerHand) > 21#not sure why I need this, if I put it in the playerHit method I error.
-      when answer == "s"
-        playerStand
-        break
-    end #end case
-  end #end loop
+    puts "================================="
+    puts "ROUND " + @round.to_s
+    puts "================================="
+    puts "Game Score: Player=" + @playerGameScore.to_s + " Dealer=" + @dealerGameScore.to_s
+    puts "PLAYER:"
+    puts "[" + identCard(@playerHand[0]) + "] [" + identCard(@playerHand[1]) + "] [H]it, [S]tay or [Q]uit?"
+    #  puts "Dealer shows the #{identCard(@dealerHand[0])}"
+    loop do
+      answer = gets().downcase.strip
+      case
+        when answer == "q"
+          break
+        when answer == "h"
+          playerHit
+          break if scoreHand(@playerHand) > 21#not sure why I need this, if I put it in the playerHit method I error.
+        when answer == "s"
+          playerStand
+          break
+      end #end case
+    end #end loop
+  end
+
+
   puts "Would you like to play again? (y/n)"
   replay = gets().downcase.strip
   main if replay == "y"
